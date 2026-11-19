@@ -1016,3 +1016,48 @@ volumes:
   db_data:
 
 
+# 1. Update Ubuntu
+sudo apt update
+
+# 2. Install Java
+sudo apt install openjdk-17-jdk -y
+
+# 3. Install Maven and Git
+sudo apt install maven git -y
+
+# 4. Verify tools
+java -version
+mvn -version
+git --version
+
+# 5. Clone repository
+git clone https://github.com/deepthisagar7/AI-OLMS.git
+
+# 6. Enter project
+cd AI-OLMS
+
+# 7. Build application
+mvn clean package
+
+# 8. Verify WAR
+ls target
+
+# 9. Install Docker
+sudo apt install docker.io -y
+
+# 10. Start Docker
+sudo systemctl enable --now docker
+
+# 11. Pull Tomcat 10.1
+sudo docker pull tomcat:10.1-jdk17
+
+# 12. Run Tomcat and deploy WAR
+sudo docker run -d \
+--name ai-olms-tomcat \
+-p 8080:8080 \
+-v "$PWD/target/ai-olms.war:/usr/local/tomcat/webapps/ai-olms.war" \
+tomcat:10.1-jdk17
+
+# 13. Verify
+sudo docker ps
+sudo docker logs ai-olms-tomcat
